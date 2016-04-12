@@ -8,10 +8,16 @@ var IssuePack = require('./lib/issue-pack');
 require('dotenv').config();
 var args = require('minimist')(process.argv.slice(2));
 
-console.dir(args);
+var utils = require('./lib/utils');
 
 //Validate input
-//utils.validate(argv);
+var valid = utils.validate(args);
+
+//
+if(!valid) {
+  utils.usage();
+  process.exit();
+}
 
 var github = new GithubAPI({
   version: "3.0.0",
