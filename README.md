@@ -18,3 +18,7 @@ _Coming soon._
 ## Examples
 
 _Coming soon._
+
+## Tests
+
+Run `mocha` from project root after installing npm dependencies
