@@ -15,12 +15,23 @@ var valid = utils.validate(args);
 
 //
 if(!valid) {
-  utils.usage();
+  console.log(chalk.bold(utils.usage()));
   process.exit();
 }
 
+var creds = {
+  username: args.u,
+  password: args.p,
+  repo: args.r,
+};
+
 var github = new GithubAPI({
   version: "3.0.0",
+});
+
+var issuePack = new IssuePack({
+  github: github,
+  creds: creds
 });
 
 //Check credentials

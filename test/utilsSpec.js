@@ -2,7 +2,7 @@ var expect = require('chai').expect;
 var utils = require('../lib/utils');
 
 describe('Utils', function () {
-  describe('#checkArgs()', function () {
+  describe('#validate()', function () {
     it('should accept correctly submitted args with one pack', function () {
       var args = {
         u: 'username',
@@ -11,7 +11,7 @@ describe('Utils', function () {
         _: 'pack1.yml'
       };
 
-      var results = utils.checkArgs(args);
+      var results = utils.validate(args);
 
       expect(results).to.be.true;
     });
@@ -24,7 +24,7 @@ describe('Utils', function () {
         _: ['pack1.yml', 'pack2.yml']
       };
 
-      var results = utils.checkArgs(args);
+      var results = utils.validate(args);
 
       expect(results).to.be.true;
     });
@@ -36,7 +36,7 @@ describe('Utils', function () {
         _: ['pack1.yml', 'pack2.yml']
       };
 
-      var results = utils.checkArgs(args);
+      var results = utils.validate(args);
 
       expect(results).to.be.false;
     });
@@ -48,7 +48,7 @@ describe('Utils', function () {
         _: ['pack1.yml', 'pack2.yml']
       };
 
-      var results = utils.checkArgs(args);
+      var results = utils.validate(args);
 
       expect(results).to.be.false;
     });
@@ -60,7 +60,7 @@ describe('Utils', function () {
         _: ['pack1.yml', 'pack2.yml']
       };
 
-      var results = utils.checkArgs(args);
+      var results = utils.validate(args);
 
       expect(results).to.be.false;
     });
@@ -73,7 +73,7 @@ describe('Utils', function () {
         _: []
       };
 
-      var results = utils.checkArgs(args);
+      var results = utils.validate(args);
 
       expect(results).to.be.false;
     });
@@ -109,5 +109,14 @@ describe('Utils', function () {
 
       expect(results).to.be.false;
     });
+  });
+
+  describe('#usage', function () {
+    it('should return usage message', function () {
+      var message = "usage: issue-pack -u username -p password -r repo pack1.yml pack2.yml ...";
+
+      var results = utils.usage();
+      expect(results).to.equal(message);
+    })
   });
 });
