@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Issue pack generator",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -23,9 +23,10 @@
     "yamljs": "^0.2.7"
   },
   "bin": {
-    "issue-pack": "issue-pack.js"
+    "issue-pack": "index.js"
   },
   "devDependencies": {
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
   }
 }

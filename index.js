@@ -6,8 +6,12 @@ var YAML = require('yamljs');
 var IssuePack = require('./lib/issue-pack');
 
 require('dotenv').config();
+var args = require('minimist')(process.argv.slice(2));
+
+console.dir(args);
 
 //Validate input
+//utils.validate(argv);
 
 var github = new GithubAPI({
   version: "3.0.0",
