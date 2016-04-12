@@ -2,7 +2,6 @@
   "name": "issue-pack",
   "version": "0.0.0",
   "description": "Issue pack generator",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,5 +21,8 @@
     "github": "^0.2.4",
     "minimist": "^1.2.0",
     "yamljs": "^0.2.7"
+  },
+  "bin": {
+    "issue-pack": "issue-pack.js"
   }
 }
