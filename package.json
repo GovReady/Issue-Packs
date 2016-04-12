@@ -24,5 +24,8 @@
   },
   "bin": {
     "issue-pack": "issue-pack.js"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0"
   }
 }
