@@ -28,4 +28,7 @@ Example issue packs can be found in the `examples/` directory.
 
 ## Tests
 
-Run `npm test` from project root after installing npm dependencies
+Ensure dependencies are installed with `npm install`
+
+Run `npm test` to run the test suite
+Run `npm run coverage` to run istanbul test coverage
