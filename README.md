@@ -1,7 +1,7 @@
 # Issue-Packs
 * * *
 
-[![Build Status](https://travis-ci.org/cmbirk/Issue-Packs.svg?branch=master)](https://travis-ci.org/cmbirk/Issue-Packs)
+[![Build Status](https://travis-ci.org/cmbirk/Issue-Packs.svg?branch=master)](https://travis-ci.org/cmbirk/Issue-Packs)  [![Coverage Status](https://coveralls.io/repos/cmbirk/Issue-Packs/badge.svg?branch=master)](https://coveralls.io/r/cmbirk/Issue-Packs?branch=master)
 
 Generate packs of compliance related issues for GitHub issues
 
