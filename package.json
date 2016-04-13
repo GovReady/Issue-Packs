@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cmbirk/Issue-Packs.git"
+    "url": "git+https://github.com/cmbirk/issue-pack.git"
   },
   "author": "Chris Birk <cmbirk@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cmbirk/Issue-Packs/issues"
+    "url": "https://github.com/cmbirk/issue-pack/issues"
   },
-  "homepage": "https://github.com/cmbirk/Issue-Packs#readme",
+  "homepage": "https://github.com/cmbirk/issue-pack#readme",
   "dependencies": {
     "chalk": "^1.1.3",
     "github": "^0.2.4",
