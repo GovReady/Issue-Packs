@@ -24,7 +24,7 @@ Link module
 
 ## Examples
 
-_Coming soon._
+Example issue packs can be found in the `examples/` directory.
 
 ## Tests
 
