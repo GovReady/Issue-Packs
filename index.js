@@ -5,10 +5,6 @@ var GithubAPI = require('github');
 var YAML = require('yamljs');
 var IssuePack = require('./lib/IssuePack').default;
 
-console.dir(IssuePack);
-
-//require('dotenv').config();
-
 //Retrieve script arguments
 var args = require('minimist')(process.argv.slice(2));
 
@@ -52,34 +48,3 @@ packFiles.forEach(function (file) {
   issuePack.authenticate();
   issuePack.push();
 });
-
-
-
-//Check credentials
-  //User
-  //Password
-  //Repo
-    //Check repo exists
-
-//Authenticate
-// github.authenticate({
-//   type: "basic",
-//   username: username,
-//   password: password
-// });
-
-//Parse YAML
-
-  //Milestone
-  //Issues
-    //Title
-    //Description
-    //Tags (optional)
-
-//Check Milestone exists in repo
-  //If milestone exists
-    //Exit
-  //Otherwise
-    //Create Milestone
-      //Create issues
-
