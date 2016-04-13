@@ -99,12 +99,7 @@ describe("IssuePack", function () {
 
   describe('#push', function () {
     it('should throw an error if no pack is loaded', function () {
-      var err = new Error('Cannot push to Github.  Pack contents not loaded.');
-
       expect(issuePack.push.bind(issuePack, 'push')).to.throw('Cannot push to Github.  Pack contents not loaded.');
-
-      //expect(logger.log).to.have.been.calledOnce;
-      //expect(logger.log.calledWith(chalk.yellow('Pushing milestone to Github'))).to.be.true;
     })
   });
 });
