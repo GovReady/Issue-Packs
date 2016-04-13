@@ -3,12 +3,23 @@
 
 Generate packs of compliance related issues for GitHub issues
 
-## Setup
-* * *
+## Installation
 
 Requirements:
 
 * NodeJS >= 1.0
+
+Run `npm install -g issue-pack` to install globally
+
+## Usage
+
+`issue-pack -u username -p password -r repo pack1.yml [pack2.yml] [pack3.yml] ...`
+
+## Examples
+
+Example issue packs can be found in the `examples/` directory.
+
+## Development
 
 Install npm dependencies:
 
@@ -18,13 +29,9 @@ Link module
 
 `npm link`
 
-## Usage
+Compile ES2015 using Babel
 
-`issue-pack -u username -p password -r repo pack1.yml [pack2.yml] [pack3.yml] ...`
-
-## Examples
-
-Example issue packs can be found in the `examples/` directory.
+`npm run compile` or use `npm run watch` to watch `src` folder
 
 ## Tests
 
