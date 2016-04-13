@@ -17,7 +17,7 @@ export default class IssuePack {
   }
 
   push() {
-    this.logger.log(chalk.green('Pushing pack to Github'));
+    this.logger.log(chalk.green('Pushing milestone to Github'));
   }
 
   toObject() {
