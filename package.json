@@ -1,6 +1,6 @@
 {
   "name": "issue-pack",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Issue pack generator",
   "scripts": {
     "test": "mocha",
