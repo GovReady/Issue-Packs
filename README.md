@@ -1,6 +1,8 @@
 # Issue-Packs
 * * *
 
+[![Build Status](https://travis-ci.org/cmbirk/Issue-Packs.svg?branch=master)](https://travis-ci.org/cmbirk/Issue-Packs)
+
 Generate packs of compliance related issues for GitHub issues
 
 ## Installation
