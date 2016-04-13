@@ -1,16 +1,16 @@
 milestone: Milestone 1
 issues:
   -
-    - title: Issue 1
-    - description: This is the first issue
-    - tags:
+    title: Issue 1
+    body: This is the first issue
+    tags:
       - Role 1
       - Role 2
   -
-    - title: Issue 2
-    - description: This is the second issue
-    - tags:
+    title: Issue 2
+    body: This is the second issue
+    tags:
       - Role 3
   -
-    - title: Issue 3
-    - decription: This is the third issue
+    title: Issue 3
+    body: This is the third issue
