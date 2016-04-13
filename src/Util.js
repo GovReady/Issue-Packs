@@ -1,7 +1,9 @@
-var chalk = require('chalk');
+"use strict";
 
-var Utils = {
-  validate: function (args) {
+import chalk from 'chalk';
+
+export default class Util {
+  validate(args) {
     var username = args.u;
     var password = args.p;
     var repo = args.r;
@@ -25,12 +27,11 @@ var Utils = {
     }
 
     return !error;
-  },
-  usage: function () {
+  }
+
+  usage() {
     var message = "usage: issue-pack -u username -p password -r repo pack1.yml [pack2.yml] [pack3.yml] ...";
 
     return message;
   }
 }
-
-module.exports = Utils;

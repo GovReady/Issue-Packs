@@ -4,19 +4,20 @@ var chalk = require('chalk');
 var GithubAPI = require('github');
 var YAML = require('yamljs');
 var IssuePack = require('./lib/IssuePack').default;
+var Util = require('./lib/Util').default;
 
 //Retrieve script arguments
 var args = require('minimist')(process.argv.slice(2));
 
-//Import Utils class
-var utils = require('./lib/utils');
+//Create new Util class
+var util = new Util();
 
 //Validate input
-var valid = utils.validate(args);
+var valid = util.validate(args);
 
 //If not valid input, echo usage and exit
 if(!valid) {
-  console.log(chalk.bold(utils.usage()));
+  console.log(chalk.bold(util.usage()));
   process.exit();
 }
 

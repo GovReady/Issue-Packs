@@ -1,7 +1,13 @@
 var expect = require('chai').expect;
-var utils = require('../lib/utils');
+var Util = require('../lib/Util').default;
 
-describe('Utils', function () {
+describe('Util', function () {
+  var util;
+
+  before(function () {
+    util = new Util();
+  });
+
   describe('#validate()', function () {
     it('should accept correctly submitted args with one pack', function () {
       var args = {
@@ -11,7 +17,7 @@ describe('Utils', function () {
         _: 'pack1.yml'
       };
 
-      var results = utils.validate(args);
+      var results = util.validate(args);
 
       expect(results).to.be.true;
     });
@@ -24,7 +30,7 @@ describe('Utils', function () {
         _: ['pack1.yml', 'pack2.yml']
       };
 
-      var results = utils.validate(args);
+      var results = util.validate(args);
 
       expect(results).to.be.true;
     });
@@ -36,7 +42,7 @@ describe('Utils', function () {
         _: ['pack1.yml', 'pack2.yml']
       };
 
-      var results = utils.validate(args);
+      var results = util.validate(args);
 
       expect(results).to.be.false;
     });
@@ -48,7 +54,7 @@ describe('Utils', function () {
         _: ['pack1.yml', 'pack2.yml']
       };
 
-      var results = utils.validate(args);
+      var results = util.validate(args);
 
       expect(results).to.be.false;
     });
@@ -60,7 +66,7 @@ describe('Utils', function () {
         _: ['pack1.yml', 'pack2.yml']
       };
 
-      var results = utils.validate(args);
+      var results = util.validate(args);
 
       expect(results).to.be.false;
     });
@@ -73,7 +79,7 @@ describe('Utils', function () {
         _: []
       };
 
-      var results = utils.validate(args);
+      var results = util.validate(args);
 
       expect(results).to.be.false;
     });
@@ -83,7 +89,7 @@ describe('Utils', function () {
     it('should return usage message', function () {
       var message = "usage: issue-pack -u username -p password -r repo pack1.yml [pack2.yml] [pack3.yml] ...";
 
-      var results = utils.usage();
+      var results = util.usage();
       expect(results).to.equal(message);
     })
   });
