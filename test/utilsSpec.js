@@ -81,7 +81,7 @@ describe('Utils', function () {
 
   describe('#usage', function () {
     it('should return usage message', function () {
-      var message = "usage: issue-pack -u username -p password -r repo pack1.yml pack2.yml ...";
+      var message = "usage: issue-pack -u username -p password -r repo pack1.yml [pack2.yml] [pack3.yml] ...";
 
       var results = utils.usage();
       expect(results).to.equal(message);
