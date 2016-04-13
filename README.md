@@ -6,14 +6,21 @@ Generate packs of compliance related issues for GitHub issues
 ## Setup
 * * *
 
+Requirements:
+
+* NodeJS >= 1.0
+
 Install npm dependencies:
+
 `npm install`
 
-_Coming soon._
+Link module
+
+`npm link`
 
 ## Usage
 
-_Coming soon._
+`issue-pack -u username -p password -r repo pack1.yml [pack2.yml] [pack3.yml] ...`
 
 ## Examples
 
@@ -21,4 +28,4 @@ _Coming soon._
 
 ## Tests
 
-Run `mocha` from project root after installing npm dependencies
+Run `npm test` from project root after installing npm dependencies
