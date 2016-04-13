@@ -6,20 +6,45 @@ var IssuePack = require('../lib/IssuePack').default;
 require('mocha-sinon');
 
 describe("IssuePack", function () {
+  var issuePack;
+  var logger;
+  var github;
+  var creds;
+
   beforeEach(function () {
     logger = {
       log: sinon.spy()
     };
 
-    issuePack = new IssuePack({}, logger);
-  });
+    github = {
+      authenticate: sinon.spy(),
+      issues: {
+        create: sinon.spy(),
+        createMilestone: function (options, cb) {
+          cb(1);
+        }
+      },
 
-  afterEach(function () {
-    issuePack = null;
+    };
+
+    creds = {
+      username: 'user',
+      password: 'pass',
+      repo: 'user/repo'
+    };
+
+    issuePack = new IssuePack({
+      github: github,
+      creds: creds
+    }, logger);
+
+    sinon.spy(github.issues, 'createMilestone');
   });
 
   describe('#load', function () {
-    beforeEach(function () {
+    var pack;
+
+    before(function (done) {
       pack = {
         'milestone': 'Milestone 1',
         'issues': [
@@ -44,6 +69,8 @@ describe("IssuePack", function () {
           }
         ]
       };
+
+      done();
     });
 
     it('should log milestone name to the console', function () {
@@ -71,11 +98,13 @@ describe("IssuePack", function () {
   });
 
   describe('#push', function () {
-    it('should log authenticating message', function () {
-      issuePack.push();
+    it('should throw an error if no pack is loaded', function () {
+      var err = new Error('Cannot push to Github.  Pack contents not loaded.');
 
-      expect(logger.log).to.have.been.calledOnce;
-      expect(logger.log.calledWith(chalk.yellow('Pushing milestone to Github'))).to.be.true;
+      expect(issuePack.push.bind(issuePack, 'push')).to.throw('Cannot push to Github.  Pack contents not loaded.');
+
+      //expect(logger.log).to.have.been.calledOnce;
+      //expect(logger.log.calledWith(chalk.yellow('Pushing milestone to Github'))).to.be.true;
     })
   });
 });

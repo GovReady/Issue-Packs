@@ -37,6 +37,10 @@ export default class IssuePack {
   push() {
     this.logger.log(chalk.yellow('Pushing milestone to Github'));
 
+    if(!this.pack) {
+      throw new Error('Cannot push to Github.  Pack contents not loaded.');
+    }
+
     this._createMilestone(this.pack.milestone, (milestone) => {
       this._createIssues(this.pack.issues, this.options.creds.repo, milestone);
     });
