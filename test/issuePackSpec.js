@@ -80,7 +80,7 @@ describe("IssuePack", function () {
       expect(logger.log.calledWith(chalk.yellow('Unpacking milestone: Milestone 1'))).to.be.true;
     });
 
-    it('should contain the correct pack information', function () {
+    it('should contain the correct milestone title and issue count', function () {
       issuePack.load(pack);
 
       expect(issuePack.pack.milestone).to.equal('Milestone 1');
@@ -100,6 +100,10 @@ describe("IssuePack", function () {
   describe('#push', function () {
     it('should throw an error if no pack is loaded', function () {
       expect(issuePack.push.bind(issuePack, 'push')).to.throw('Cannot push to Github.  Pack contents not loaded.');
-    })
+    });
+
+    it('should send the correct milestone to Github');
+    it('should send the correct number of issues to Github');
+    it('should send the correct labels with an issue');
   });
 });
