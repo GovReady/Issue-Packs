@@ -21,14 +21,21 @@ describe("IssuePack", function () {
       authenticate: sinon.spy(),
       issues: {
         create: function (options, cb) {
-          cb({
+          cb(null, {
+            data: {
+              html_url: 'http://example.com'
+            }
+          });
+        },
+        createLabel: function (options, cb) {
+          cb(null, {
             data: {
               html_url: 'http://example.com'
             }
           });
         },
         createMilestone: function (options, cb) {
-          cb(1);
+          cb(null, {html_url: 'http://example.com'});
         }
       },
 
@@ -51,7 +58,7 @@ describe("IssuePack", function () {
           {
             'title': 'Issue 1',
             'body': 'This is the first issue',
-            'tags': [
+            'labels': [
               'Role 1',
               'Role 2'
             ]
@@ -59,7 +66,7 @@ describe("IssuePack", function () {
           {
             'title': 'Issue 2',
             'body': 'This is the second issue',
-            'tags': [
+            'labels': [
               'Role 3'
             ]
           },
@@ -71,6 +78,7 @@ describe("IssuePack", function () {
       };
 
     sinon.spy(github.issues, 'createMilestone');
+    sinon.spy(github.issues, 'createLabel');
     sinon.spy(github.issues, 'create');
     sinon.spy(issuePack, '_createIssue');
   });
@@ -119,6 +127,18 @@ describe("IssuePack", function () {
 
       expect(github.issues.create.callCount).to.equal(3);
     });
-    it('should send the correct labels with an issue');
+
+    it('should create the labels for an issue', function () {
+      issuePack._createIssue(pack.issues[0], creds.repo, 1);
+
+      expect(github.issues.createLabel.callCount).to.equal(2);
+    });
+
+    it('should send the correct labels with an issue', function () {
+      issuePack._createIssue(pack.issues[0], creds.repo, 1);
+      var labelsObject = { labels: ['Role 1', 'Role 2'] };
+
+      expect(github.issues.create.calledWithMatch(labelsObject)).to.be.true;
+    });
   });
 });
