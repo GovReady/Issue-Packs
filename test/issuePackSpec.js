@@ -140,4 +140,31 @@ describe("IssuePack", function () {
       expect(github.issues.createMilestone.calledWith('Milestone 1'));
     });
   });
+
+  describe('#_createIssues', function () {
+    it('should create each issue');
+  });
+
+  describe('#_createIssue', function () {
+    it('should create the labels');
+    it('should create the issue');
+  });
+
+  describe('#_createMilestone', function () {
+    it('should create the milestone');
+    it('should handle existing milestones');
+    it('should get the number for an existing milestone');
+  });
+
+  describe('#_getMilestoneNumber', function () {
+    it('should get the milestone number');
+  });
+
+  describe('#_createLabel', function () {
+    it('should return a promise');
+    it('should generate a color');
+    it('should create the label');
+    it('should handle existing labels');
+  });
+
 });
