@@ -20,7 +20,13 @@ describe("IssuePack", function () {
     github = {
       authenticate: sinon.spy(),
       issues: {
-        create: sinon.spy(),
+        create: function (options, cb) {
+          cb({
+            data: {
+              html_url: 'http://example.com'
+            }
+          });
+        },
         createMilestone: function (options, cb) {
           cb(1);
         }
@@ -65,6 +71,8 @@ describe("IssuePack", function () {
       };
 
     sinon.spy(github.issues, 'createMilestone');
+    sinon.spy(github.issues, 'create');
+    sinon.spy(issuePack, '_createIssue');
   });
 
   describe('#load', function () {
@@ -102,9 +110,15 @@ describe("IssuePack", function () {
       issuePack.load(pack);
       issuePack.push();
 
+      expect(github.issues.createMilestone.calledOnce).to.be.true;
       expect(github.issues.createMilestone.calledWith('Milestone 1'));
     });
-    it('should send the correct number of issues to Github');
+
+    it('should send the correct number of issues to Github', function () {
+      issuePack._createIssues(pack.issues, creds.repo, 1);
+
+      expect(github.issues.create.callCount).to.equal(3);
+    });
     it('should send the correct labels with an issue');
   });
 });
