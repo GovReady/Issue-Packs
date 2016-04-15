@@ -21,6 +21,28 @@ Run `npm install -g issue-pack` to install globally
 
 Example issue packs can be found in the `examples/` directory.
 
+### Issue Pack Format ( YAML )
+
+```
+
+milestone: <milestone name> # Required
+issues: # Required
+  -
+    title: <issue title> # Required
+    body: <issue body text> # Required
+    tags: # Optional
+      - <tag 1>
+      - <tag 2>
+  -
+    title: <issue title>
+    body: <issue body text>
+    tags:
+      - <tag 1>
+      - <tag 2>
+  ...
+
+```
+
 ## Development
 
 Install npm dependencies:
