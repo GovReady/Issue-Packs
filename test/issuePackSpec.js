@@ -77,10 +77,14 @@ describe("IssuePack", function () {
         ]
       };
 
+    // Spy on Github calls
     sinon.spy(github.issues, 'createMilestone');
     sinon.spy(github.issues, 'createLabel');
     sinon.spy(github.issues, 'create');
+
+    //Spy on IssuePack calls
     sinon.spy(issuePack, '_createIssue');
+    sinon.spy(issuePack, '_createMilestone');
   });
 
   describe('#load', function () {
@@ -114,31 +118,26 @@ describe("IssuePack", function () {
       expect(issuePack.push.bind(issuePack, 'push')).to.throw('Cannot push to Github.  Pack contents not loaded.');
     });
 
+    it('should create the milestone', function () {
+      issuePack.pack = pack;
+      issuePack.push();
+
+      expect(issuePack._createMilestone.callCount).to.equal(1);
+    });
+
+    it('should create the issues', function () {
+      issuePack.pack = pack;
+      issuePack.push();
+
+      expect(issuePack._createIssue.callCount).to.equal(3);
+    });
+
     it('should send the correct milestone to Github', function () {
-      issuePack.load(pack);
+      issuePack.pack = pack;
       issuePack.push();
 
       expect(github.issues.createMilestone.calledOnce).to.be.true;
       expect(github.issues.createMilestone.calledWith('Milestone 1'));
-    });
-
-    it('should send the correct number of issues to Github', function () {
-      issuePack._createIssues(pack.issues, creds.repo, 1);
-
-      expect(github.issues.create.callCount).to.equal(3);
-    });
-
-    it('should create the labels for an issue', function () {
-      issuePack._createIssue(pack.issues[0], creds.repo, 1);
-
-      expect(github.issues.createLabel.callCount).to.equal(2);
-    });
-
-    it('should send the correct labels with an issue', function () {
-      issuePack._createIssue(pack.issues[0], creds.repo, 1);
-      var labelsObject = { labels: ['Role 1', 'Role 2'] };
-
-      expect(github.issues.create.calledWithMatch(labelsObject)).to.be.true;
     });
   });
 });
