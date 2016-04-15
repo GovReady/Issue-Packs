@@ -15,7 +15,9 @@ Run `npm install -g issue-pack` to install globally
 
 ## Usage
 
-`issue-pack -u username -p password -r repo pack1.yml [pack2.yml] [pack3.yml] ...`
+**The pack arguments can either be a series of files or a directory**
+
+`issue-pack -u username -p password -r repo (pack1.yml ...) [pack2.yml] [pack3.yml] ...`
 
 ## Examples
 
@@ -61,5 +63,4 @@ Compile ES2015 using Babel
 
 Ensure dependencies are installed with `npm install`
 
-Run `npm test` to run the test suite
-Run `npm run coverage` to run istanbul test coverage
+Run `npm test` to run the test suite ( or `mocha` for a faster run without coverage)
