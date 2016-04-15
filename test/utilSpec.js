@@ -1,12 +1,18 @@
 var expect = require('chai').expect;
+var chalk = require('chalk');
 var mock = require('mock-fs');
+var sinon = require('sinon');
 var Util = require('../lib/Util').default;
 
 describe('Util', function () {
   var util;
 
   before(function () {
-    util = new Util();
+    logger = {
+      log: sinon.spy()
+    };
+
+    util = new Util(logger);
   });
 
   describe('#parseFiles', function () {
@@ -16,9 +22,9 @@ describe('Util', function () {
         'pack2.yml': 'Contents 2',
         'pack3.yml': 'Contents 3',
         'examples': {
-          'pack2.yml': 'Contents 4',
-          'pack3.yml': 'Contents 5',
-          'pack4.yml': 'Contents 6'
+          'pack4.yml': 'Contents 4',
+          'pack5.yml': 'Contents 5',
+          'pack6.yml': 'Contents 6'
         }
       });
     });
@@ -57,14 +63,13 @@ describe('Util', function () {
       expect(result).to.equal(files);
     });
 
-    it('should correctly parse a directory');
-    // it('should correctly parse a directory', function () {
-    //   var files = ['examples'];
-    //   var expected = ['examples/pack4.yml', 'examples/pack5.yml', 'examples/pack6.yml']
-    //   var result = util.parseFiles(files);
+    it('should correctly parse a directory', function () {
+      var files = ['examples'];
+      var expected = ['examples/pack4.yml', 'examples/pack5.yml', 'examples/pack6.yml']
+      var result = util.parseFiles(files);
 
-    //   expect(result).to.equal(expected);
-    // });
+      expect(result).to.eql(expected);
+    });
   });
 
   describe('#validate()', function () {

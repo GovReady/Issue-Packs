@@ -4,28 +4,46 @@ import chalk from 'chalk';
 import fs from 'fs';
 
 export default class Util {
+  //Set util options
   constructor (logger = console) {
     this.logger = logger;
   }
 
   parseFiles(files) {
+    //Ensure that the input files or directory exist
     this._checkExist(files);
 
+    //If there's only one input
     if(files.length === 1) {
+      //Check if it's a directory and parse directory,
+        //Otherwise just return the files array
       if(fs.lstatSync(files[0]).isDirectory()) {
         var dir = files[0];
+
+
+
+        var dirFiles = fs.readdirSync(dir);
 
         if('/' !== dir.slice(-1)){
           dir = dir + '/';
         }
 
-        this.logger.log(chalk.yellow('Retrieving files from ' + dir));
+        this.logger.log(chalk.yellow('Retrieved files from `' + dir + '`'));
+
+        var paths = dirFiles.map(function (file) {
+          var path = dir + file;
+
+          return path;
+        });
+
+        return paths;
       }
     }
 
     return files;
   }
 
+  //Validate input arguments
   validate(args) {
     var username = args.u;
     var password = args.p;
@@ -52,12 +70,14 @@ export default class Util {
     return !error;
   }
 
+  //Print script usage
   usage() {
     var message = "usage: issue-pack -u username -p password -r repo pack1.yml [pack2.yml] [pack3.yml] ...";
 
     return message;
   }
 
+  //Check input files or directory exist
   _checkExist(files) {
     for ( var file of files ) {
       if(!fs.existsSync(file)) {
