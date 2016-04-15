@@ -34,7 +34,7 @@ var github = new GithubAPI({
 });
 
 //Retrieve pack files
-var packFiles = args._;
+var packFiles = util.parseFiles(args._);
 
 //Iterate through the pack files
 packFiles.forEach(function (file) {
