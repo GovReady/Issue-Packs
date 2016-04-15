@@ -10,6 +10,7 @@ describe("IssuePack", function () {
   var logger;
   var github;
   var creds;
+  var pack;
 
   beforeEach(function () {
     logger = {
@@ -38,14 +39,7 @@ describe("IssuePack", function () {
       creds: creds
     }, logger);
 
-    sinon.spy(github.issues, 'createMilestone');
-  });
-
-  describe('#load', function () {
-    var pack;
-
-    before(function (done) {
-      pack = {
+    pack = {
         'milestone': 'Milestone 1',
         'issues': [
           {
@@ -70,8 +64,10 @@ describe("IssuePack", function () {
         ]
       };
 
-      done();
-    });
+    sinon.spy(github.issues, 'createMilestone');
+  });
+
+  describe('#load', function () {
 
     it('should log milestone name to the console', function () {
       issuePack.load(pack);
@@ -102,7 +98,12 @@ describe("IssuePack", function () {
       expect(issuePack.push.bind(issuePack, 'push')).to.throw('Cannot push to Github.  Pack contents not loaded.');
     });
 
-    it('should send the correct milestone to Github');
+    it('should send the correct milestone to Github', function () {
+      issuePack.load(pack);
+      issuePack.push();
+
+      expect(github.issues.createMilestone.calledWith('Milestone 1'));
+    });
     it('should send the correct number of issues to Github');
     it('should send the correct labels with an issue');
   });
