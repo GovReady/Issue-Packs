@@ -148,16 +148,20 @@ describe("IssuePack", function () {
   describe('#_createIssue', function () {
     it('should create the labels');
     it('should create the issue');
+    it('should log any errors');
   });
 
   describe('#_createMilestone', function () {
     it('should create the milestone');
     it('should handle existing milestones');
     it('should get the number for an existing milestone');
+    it('should log any errors');
   });
 
   describe('#_getMilestoneNumber', function () {
-    it('should get the milestone number');
+    it('should retrieve all milestones');
+    it('should log any errors');
+    it('should locate correct milestone and return the number');
   });
 
   describe('#_createLabel', function () {
