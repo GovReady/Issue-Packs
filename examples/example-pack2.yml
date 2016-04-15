@@ -3,13 +3,13 @@ issues:
   -
     title: Issue 1
     body: This is the first issue
-    tags:
+    labels:
       - Role 1
       - Role 2
   -
     title: Issue 2
     body: This is the second issue
-    tags:
+    labels:
       - Role 3
   -
     title: Issue 3

@@ -30,13 +30,13 @@ issues: # Required
   -
     title: <issue title> # Required
     body: <issue body text> # Required
-    tags: # Optional
+    labels: # Optional
       - <tag 1>
       - <tag 2>
   -
     title: <issue title>
     body: <issue body text>
-    tags:
+    labels:
       - <tag 1>
       - <tag 2>
   ...
