@@ -9,7 +9,7 @@ Generate packs of GitHub issues from YAML files
 
 Requirements:
 
-* NodeJS >= 1.0
+* NodeJS >= 1.1
 
 Run `npm install -g issue-pack` to install globally
 
