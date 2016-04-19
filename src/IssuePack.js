@@ -99,7 +99,7 @@ export default class IssuePack {
       if(err) {
         var message = JSON.parse(err);
 
-        if(message.errors.length === 1 && message.errors[0].code == 'already_exists') {
+        if(message.errors && message.errors.length === 1 && message.errors[0].code == 'already_exists') {
           this.logger.log(chalk.yellow.bold('Milestone `' + milestone + '` already exists.  Retrieving id from Github.'));
 
           this._getMilestoneNumber(milestone, function (number) {
@@ -149,7 +149,7 @@ export default class IssuePack {
         if(err) {
           var message = JSON.parse(err);
 
-          if(message.errors.length === 1 && message.errors[0].code == 'already_exists') {
+          if(message.errors && message.errors.length === 1 && message.errors[0].code == 'already_exists') {
             this.logger.log(chalk.yellow.bold('Label `' + name + '` already exists.  Skipping'));
 
             resolve(err);
