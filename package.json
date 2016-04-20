@@ -6,18 +6,19 @@
     "test": "istanbul cover _mocha",
     "compile": "babel src --out-dir lib",
     "watch": "babel src --out-dir lib --watch",
-    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "setup": "npm install && npm link"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cmbirk/issue-pack.git"
+    "url": "git@github.com:GovReady/Issue-Packs.git"
   },
   "author": "Chris Birk <cmbirk@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cmbirk/issue-pack/issues"
+    "url": "https://github.com/GovReady/Issue-Packs/issues"
   },
-  "homepage": "https://github.com/cmbirk/issue-pack#readme",
+  "homepage": "https://github.com/GovReady/Issue-Packs#readme",
   "dependencies": {
     "chalk": "^1.1.3",
     "fs": "0.0.2",
