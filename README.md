@@ -1,7 +1,7 @@
 # Issue-Packs
 * * *
 
-[![Build Status](https://travis-ci.org/cmbirk/issue-pack.svg?branch=master)](https://travis-ci.org/cmbirk/issue-pack)  [![Coverage Status](https://coveralls.io/repos/github/cmbirk/issue-pack/badge.svg?branch=master)](https://coveralls.io/github/cmbirk/issue-pack?branch=master)
+[![Build Status](https://travis-ci.org/GovReady/Issue-Packs.svg?branch=master)](https://travis-ci.org/GovReady/Issue-Packs)  [![Coverage Status](https://coveralls.io/repos/github/cmbirk/issue-pack/badge.svg?branch=master)](https://coveralls.io/github/cmbirk/issue-pack?branch=master)
 
 Generate packs of GitHub issues from YAML files
 
