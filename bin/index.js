@@ -3,8 +3,8 @@
 var chalk = require('chalk');
 var GithubAPI = require('github');
 var YAML = require('yamljs');
-var IssuePack = require('./lib/IssuePack').default;
-var Util = require('./lib/Util').default;
+var IssuePack = require('../lib/IssuePack').default;
+var Util = require('../lib/Util').default;
 
 //Retrieve script arguments
 var args = require('minimist')(process.argv.slice(2));
