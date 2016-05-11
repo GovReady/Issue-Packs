@@ -3,7 +3,7 @@
 import chalk from 'chalk';
 import randomstring from 'randomstring';
 
-export default class IssuePack {
+export default class {
   //Set initial options and logger
   constructor (options, logger = console) {
     this.options = options;

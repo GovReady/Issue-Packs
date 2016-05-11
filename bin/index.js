@@ -3,7 +3,7 @@
 var chalk = require('chalk');
 var GithubAPI = require('github');
 var YAML = require('yamljs');
-var IssuePack = require('../lib/IssuePack').default;
+var IssuePack = require('../lib/IssuePack');
 var Util = require('../lib/Util').default;
 
 //Retrieve script arguments
