@@ -10,6 +10,7 @@ describe("IssuePack", function () {
   var logger;
   var github;
   var creds;
+  var repo;
   var pack;
 
   beforeEach(function () {
@@ -43,9 +44,10 @@ describe("IssuePack", function () {
 
     creds = {
       username: 'user',
-      password: 'pass',
-      repo: 'user/repo'
+      password: 'pass'
     };
+
+    repo = 'user/repo';
 
     issuePack = new IssuePack({
       github: github,
@@ -106,7 +108,10 @@ describe("IssuePack", function () {
 
   describe('#authenticate', function () {
     it('should log authenticating message', function () {
-      issuePack.authenticate();
+      issuePack.authenticate({
+        type: 'basic',
+        creds: creds
+      });
 
       expect(logger.log).to.have.been.calledOnce;
       expect(logger.log.calledWith(chalk.yellow('Authenticating with Github'))).to.be.true;
@@ -120,21 +125,21 @@ describe("IssuePack", function () {
 
     it('should create the milestone', function () {
       issuePack.pack = pack;
-      issuePack.push();
+      issuePack.push(repo);
 
       expect(issuePack._createMilestone.callCount).to.equal(1);
     });
 
     it('should create the issues', function () {
       issuePack.pack = pack;
-      issuePack.push();
+      issuePack.push(repo);
 
       expect(issuePack._createIssue.callCount).to.equal(3);
     });
 
     it('should send the correct milestone to Github', function () {
       issuePack.pack = pack;
-      issuePack.push();
+      issuePack.push(repo);
 
       expect(github.issues.createMilestone.calledOnce).to.be.true;
       expect(github.issues.createMilestone.calledWith('Milestone 1'));

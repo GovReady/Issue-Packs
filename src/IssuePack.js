@@ -23,27 +23,40 @@ export default class {
   /**
    *  Authenticate with Github
    */
-  authenticate() {
+  authenticate(options) {
+    if(options.type === undefined) {
+      throw new Error('No authentication type specified');
+    }
+
     this.logger.log(chalk.yellow('Authenticating with Github'));
-    this.options.github.authenticate({
-      type: 'basic',
-      username: this.options.creds.username,
-      password: this.options.creds.password
-    });
+
+    switch(options.type) {
+      case 'oauth':
+        this.options.github.authenticate({
+          type: 'oauth',
+          token: options.token
+        });
+      default:
+        this.options.github.authenticate({
+          type: 'basic',
+          username: options.creds.username,
+          password: options.creds.password
+        });
+    }
   }
 
   /**
    *  Push issue pack to Github
    */
-  push() {
+  push(repo) {
     this.logger.log(chalk.yellow('Pushing milestone to Github'));
 
     if(!this.pack) {
       throw new Error('Cannot push to Github.  Pack contents not loaded.');
     }
 
-    this._createMilestone(this.pack.milestone, (milestone) => {
-      this._createIssues(this.pack.issues, this.options.creds.repo, milestone);
+    this._createMilestone(this.pack.milestone, repo, (milestone) => {
+      this._createIssues(this.pack.issues, repo, milestone);
     });
   }
 
@@ -64,7 +77,7 @@ export default class {
     var labelPromises = [];
 
     for ( var i in issue.labels ) {
-      var res = this._createLabel(issue.labels[i]);
+      var res = this._createLabel(issue.labels[i], repo);
 
       labelPromises.push(res);
     }
@@ -90,10 +103,10 @@ export default class {
   /**
    *  Create milestone on Github
    */
-  _createMilestone(milestone, cb) {
+  _createMilestone(milestone, repo, cb) {
     return this.options.github.issues.createMilestone({
-      user: this.options.creds.repo.split('/')[0],
-      repo: this.options.creds.repo.split('/')[1],
+      user: repo.split('/')[0],
+      repo: repo.split('/')[1],
       title: milestone
     }, function (err, data) {
       if(err) {
@@ -102,7 +115,7 @@ export default class {
         if(message.errors && message.errors.length === 1 && message.errors[0].code == 'already_exists') {
           this.logger.log(chalk.yellow.bold('Milestone `' + milestone + '` already exists.  Retrieving id from Github.'));
 
-          this._getMilestoneNumber(milestone, function (number) {
+          this._getMilestoneNumber(milestone,  repo, function (number) {
             cb(number);
           });
         } else {
@@ -115,10 +128,10 @@ export default class {
     }.bind(this));
   }
 
-  _getMilestoneNumber(name, cb) {
+  _getMilestoneNumber(name, repo, cb) {
     var milestones = this.options.github.issues.getAllMilestones({
-      user: this.options.creds.repo.split('/')[0],
-      repo: this.options.creds.repo.split('/')[1]
+      user: repo.split('/')[0],
+      repo: repo.split('/')[1]
     }, function (err, data) {
       if(err) {
         this.logger.log(chalk.red(err));
@@ -132,7 +145,7 @@ export default class {
     });
   }
 
-  _createLabel(name, cb, color = null) {
+  _createLabel(name, repo, cb, color = null) {
     //If no color is passed, generate a random hex value
     if(!color) {
       color = randomstring.generate({ length: 6, charset: 'hex'});
@@ -141,8 +154,8 @@ export default class {
     //Create the label
     return new Promise(function (resolve, reject) {
       this.options.github.issues.createLabel({
-        user: this.options.creds.repo.split('/')[0],
-        repo: this.options.creds.repo.split('/')[1],
+        user: repo.split('/')[0],
+        repo: repo.split('/')[1],
         name: name,
         color: color
       }, function (err, data) {

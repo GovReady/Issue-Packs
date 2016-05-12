@@ -24,9 +24,10 @@ if(!valid) {
 //Set up creds object from input arguments
 var creds = {
   username: args.u,
-  password: args.p,
-  repo: args.r,
+  password: args.p
 };
+
+var repo = args.r;
 
 //Create new github object
 var github = new GithubAPI({
@@ -39,13 +40,17 @@ var packFiles = util.parseFiles(args._);
 //Iterate through the pack files
 packFiles.forEach(function (file) {
   var issuePack = new IssuePack({
-    github: github,
-    creds: creds
+    github: github
   });
 
   var contents = YAML.load(file);
 
   issuePack.load(contents);
-  issuePack.authenticate();
-  issuePack.push();
+
+  issuePack.authenticate({
+    type: 'basic',
+    creds: creds
+  });
+
+  issuePack.push(repo);
 });
