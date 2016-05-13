@@ -1,6 +1,6 @@
 {
   "name": "issue-pack",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Issue pack generator",
   "scripts": {
     "test": "istanbul cover _mocha",
