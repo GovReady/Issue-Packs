@@ -6,8 +6,8 @@ import Github from 'github';
 
 export default class {
   //Set initial options and logger
-  constructor (options, logger = console, github = null) {
-    if(github === null) {
+  constructor (options, logger = console, github) {
+    if(github === undefined) {
       this.github = new Github({
         version: "3.0.0"
       });
