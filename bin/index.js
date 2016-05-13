@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var chalk = require('chalk');
-var GithubAPI = require('github');
 var YAML = require('yamljs');
 var IssuePack = require('../lib/IssuePack');
 var Util = require('../lib/Util').default;
@@ -29,28 +28,18 @@ var creds = {
 
 var repo = args.r;
 
-//Create new github object
-var github = new GithubAPI({
-  version: "3.0.0",
-});
-
 //Retrieve pack files
 var packFiles = util.parseFiles(args._);
 
 //Iterate through the pack files
 packFiles.forEach(function (file) {
   var issuePack = new IssuePack({
-    github: github
+    auth: creds
   });
 
   var contents = YAML.load(file);
 
   issuePack.load(contents);
-
-  issuePack.authenticate({
-    type: 'basic',
-    creds: creds
-  });
 
   issuePack.push(repo);
 });

@@ -1,21 +1,32 @@
 "use strict";
 
+import axios from 'axios';
 import chalk from 'chalk';
 import randomstring from 'randomstring';
-import Github from 'github';
+import {Base64} from 'js-base64';
+import Github from 'github-api';
 
-export default class {
+class IssuePack {
   //Set initial options and logger
   constructor (options, logger = console, github) {
-    this.github = github;
-
-    if(this.github === undefined) {
-      this.github = new Github({
-        version: "3.0.0"
-      });
+    if(!options.auth) {
+      throw new Error('Incorrect authorization options');
     }
 
-    this.options = options;
+    this.__github = {};
+
+    this.__auth = {
+      token: options.auth.token,
+      username: options.auth.username,
+      password: options.auth.password
+    };
+
+    axios.defaults.headers.common['Accept'] = 'application/vnd.github.v3+json';
+
+    this.__authenticate(this.__auth);
+    this.__http = axios.create();
+    this.__apiBase = 'https://api.github.com';
+
     this.logger = logger;
   }
 
@@ -30,27 +41,22 @@ export default class {
   }
 
   /**
-   *  Authenticate with Github
+   *  Set authentication headers
    */
-  authenticate(options) {
-    if(options.type === undefined) {
-      throw new Error('No authentication type specified');
-    }
+  __authenticate(auth) {
+    if(this.__auth.token) {
+      axios.defaults.headers.common['Authorization'] = 'token ' + this.__auth.token;
 
-    this.logger.log(chalk.yellow('Authenticating with Github'));
+      this.__github = new Github({
+        token: this.__auth.token
+      });
+    } else if ( this.__auth.username && this.__auth.password ) {
+      axios.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(this.__auth.username + ':' + this.__auth.password);
 
-    switch(options.type) {
-      case 'oauth':
-        this.github.authenticate({
-          type: 'oauth',
-          token: options.token
-        });
-      default:
-        this.github.authenticate({
-          type: 'basic',
-          username: options.creds.username,
-          password: options.creds.password
-        });
+      this.__github = new Github({
+        username: this.__auth.username,
+        password: this.__auth.password
+      });
     }
   }
 
@@ -82,7 +88,6 @@ export default class {
    * Create each issue on Github
    */
   _createIssue(issue, repo, milestone) {
-
     var labelPromises = [];
 
     for ( var i in issue.labels ) {
@@ -91,21 +96,22 @@ export default class {
       labelPromises.push(res);
     }
 
-    Promise.all(labelPromises).then(function () {
-      this.github.issues.create({
-        user: repo.split('/')[0],
-        repo: repo.split('/')[1],
+    Promise.all(labelPromises).then(function (resolve, reject) {
+      var newIssue = {
         title: issue.title,
         body: issue.body,
         milestone: milestone,
         labels: issue.labels
-      }, function (err, data) {
-        if(err) {
-          this.logger.log(chalk.red('Error: ' + err));
-        } else {
+      };
+
+      this.__http.post(this.__apiBase + "/repos/" + repo + "/issues", newIssue)
+        .then(function (res) {
+          var data = res.data;
           this.logger.log(chalk.green('Issue created: ' + data.html_url));
-        }
-      }.bind(this));
+        }.bind(this))
+        .catch(function (err) {
+          this.logger.log(chalk.red('Error: ' + err));
+        }.bind(this));
     }.bind(this));
   }
 
@@ -113,16 +119,20 @@ export default class {
    *  Create milestone on Github
    */
   _createMilestone(milestone, repo, cb) {
-    return this.github.issues.createMilestone({
-      user: repo.split('/')[0],
-      repo: repo.split('/')[1],
+    var milestone = {
       title: milestone
-    }, function (err, data) {
-      if(err) {
-        var message = JSON.parse(err);
+    };
 
-        if(message.errors && message.errors.length === 1 && message.errors[0].code == 'already_exists') {
-          this.logger.log(chalk.yellow.bold('Milestone `' + milestone + '` already exists.  Retrieving id from Github.'));
+    this.__http.post(this.__apiBase + '/repos/' + repo + '/milestones', milestone)
+      .then(function (res) {
+        this.logger.log(chalk.green('Milestone created: ' + res.data.html_url));
+        cb(res.data.number);
+      })
+      .catch(function (res) {
+        var message = res.data;
+
+        if(message.errors && message.errors.length == 1 && message.errors[0].code == 'already_exists') {
+          this.logger.log(chalk.yellow.bold('Milestone `' + milestone.title + '` already exists.  Retrieving id from Github.'));
 
           this._getMilestoneNumber(milestone,  repo, function (number) {
             cb(number);
@@ -130,28 +140,21 @@ export default class {
         } else {
           this.logger.log(chalk.red('Error: ' + err));
         }
-      } else {
-        this.logger.log(chalk.green('Milestone created: ' + data.html_url));
-        cb(data.number);
-      }
-    }.bind(this));
+      }.bind(this));
   }
 
-  _getMilestoneNumber(name, repo, cb) {
-    var milestones = this.github.issues.getAllMilestones({
-      user: repo.split('/')[0],
-      repo: repo.split('/')[1]
-    }, function (err, data) {
-      if(err) {
-        this.logger.log(chalk.red(err));
-      } else {
-        var found = data.find(function (milestone) {
-          return milestone.title == name;
+  _getMilestoneNumber(q, repo, cb) {
+    this.__http.get(this.__apiBase + '/repos/' + repo + '/milestones')
+      .then(function(res) {
+        var found = res.data.find(function (milestone) {
+          return milestone.title == q.title;
         });
 
         cb(found.number);
-      }
-    });
+      })
+      .catch(function (err) {
+        this.logger.log(chalk.red(err.data));
+      }.bind(this));
   }
 
   _createLabel(name, repo, cb, color = null) {
@@ -160,31 +163,29 @@ export default class {
       color = randomstring.generate({ length: 6, charset: 'hex'});
     }
 
-    //Create the label
     return new Promise(function (resolve, reject) {
-      this.github.issues.createLabel({
-        user: repo.split('/')[0],
-        repo: repo.split('/')[1],
+      this.__http.post(this.__apiBase + '/repos/' + repo + '/labels', {
         name: name,
         color: color
-      }, function (err, data) {
-        if(err) {
-          var message = JSON.parse(err);
+      })
+      .then(function (res) {
+        this.logger.log(chalk.green('Label `' + name + '` created.'));
+        resolve('Label `' + name + '` created.');
+      }.bind(this))
+      .catch(function (err) {
+        var message = err.data;
 
-          if(message.errors && message.errors.length === 1 && message.errors[0].code == 'already_exists') {
-            this.logger.log(chalk.yellow.bold('Label `' + name + '` already exists.  Skipping'));
+        if(message.errors && message.errors.length == 1 && message.errors[0].code == 'already_exists') {
+          this.logger.log(chalk.yellow.bold('Label `' + name + '` already exists.  Skipping'));
 
-            resolve(err);
-          } else {
-            this.logger.log(chalk.red('Error: ' + err));
-            reject(err);
-          }
+          resolve(err);
         } else {
-
-          this.logger.log(chalk.green('Label `' + name + '` created.'));
-          resolve('Label `' + name + '` created.');
+          this.logger.log(chalk.red('Error: ' + err));
+          reject(err);
         }
       }.bind(this));
     }.bind(this));
   }
 }
+
+module.exports = IssuePack;

@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 var chalk = require('chalk');
 var sinon = require('sinon');
-var IssuePack = require('../lib/IssuePack').default;
+var IssuePack = require('../lib/IssuePack');
 
 require('mocha-sinon');
 
@@ -42,14 +42,14 @@ describe("IssuePack", function () {
 
     };
 
-    creds = {
-      username: 'user',
-      password: 'pass'
-    };
-
     repo = 'user/repo';
 
-    issuePack = new IssuePack({}, logger, github);
+    issuePack = new IssuePack({
+      auth: {
+        username: 'user',
+        password: 'pass'
+      }
+    }, logger, github);
 
     pack = {
         'milestone': 'Milestone 1',
@@ -83,6 +83,7 @@ describe("IssuePack", function () {
 
     //Spy on IssuePack calls
     sinon.spy(issuePack, '_createIssue');
+    sinon.spy(issuePack, '_createIssues');
     sinon.spy(issuePack, '_createMilestone');
   });
 
@@ -103,18 +104,6 @@ describe("IssuePack", function () {
     });
   });
 
-  describe('#authenticate', function () {
-    it('should log authenticating message', function () {
-      issuePack.authenticate({
-        type: 'basic',
-        creds: creds
-      });
-
-      expect(logger.log).to.have.been.calledOnce;
-      expect(logger.log.calledWith(chalk.yellow('Authenticating with Github'))).to.be.true;
-    })
-  });
-
   describe('#push', function () {
     it('should throw an error if no pack is loaded', function () {
       expect(issuePack.push.bind(issuePack, 'push')).to.throw('Cannot push to Github.  Pack contents not loaded.');
@@ -125,21 +114,6 @@ describe("IssuePack", function () {
       issuePack.push(repo);
 
       expect(issuePack._createMilestone.callCount).to.equal(1);
-    });
-
-    it('should create the issues', function () {
-      issuePack.pack = pack;
-      issuePack.push(repo);
-
-      expect(issuePack._createIssue.callCount).to.equal(3);
-    });
-
-    it('should send the correct milestone to Github', function () {
-      issuePack.pack = pack;
-      issuePack.push(repo);
-
-      expect(github.issues.createMilestone.calledOnce).to.be.true;
-      expect(github.issues.createMilestone.calledWith('Milestone 1'));
     });
   });
 
@@ -158,6 +132,7 @@ describe("IssuePack", function () {
     it('should handle existing milestones');
     it('should get the number for an existing milestone');
     it('should log any errors');
+    it('should create the issues');
   });
 
   describe('#_getMilestoneNumber', function () {
