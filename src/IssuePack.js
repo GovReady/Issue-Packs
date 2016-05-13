@@ -2,10 +2,19 @@
 
 import chalk from 'chalk';
 import randomstring from 'randomstring';
+import Github from 'github';
 
 export default class {
   //Set initial options and logger
-  constructor (options, logger = console) {
+  constructor (options, logger = console, github = null) {
+    if(github === null) {
+      this.github = new Github({
+        version: "3.0.0"
+      });
+    } else {
+      this.github = github;
+    }
+
     this.options = options;
     this.logger = logger;
   }
@@ -32,12 +41,12 @@ export default class {
 
     switch(options.type) {
       case 'oauth':
-        this.options.github.authenticate({
+        this.github.authenticate({
           type: 'oauth',
           token: options.token
         });
       default:
-        this.options.github.authenticate({
+        this.github.authenticate({
           type: 'basic',
           username: options.creds.username,
           password: options.creds.password
@@ -83,7 +92,7 @@ export default class {
     }
 
     Promise.all(labelPromises).then(function () {
-      this.options.github.issues.create({
+      this.github.issues.create({
         user: repo.split('/')[0],
         repo: repo.split('/')[1],
         title: issue.title,
@@ -104,7 +113,7 @@ export default class {
    *  Create milestone on Github
    */
   _createMilestone(milestone, repo, cb) {
-    return this.options.github.issues.createMilestone({
+    return this.github.issues.createMilestone({
       user: repo.split('/')[0],
       repo: repo.split('/')[1],
       title: milestone
@@ -129,7 +138,7 @@ export default class {
   }
 
   _getMilestoneNumber(name, repo, cb) {
-    var milestones = this.options.github.issues.getAllMilestones({
+    var milestones = this.github.issues.getAllMilestones({
       user: repo.split('/')[0],
       repo: repo.split('/')[1]
     }, function (err, data) {
@@ -153,7 +162,7 @@ export default class {
 
     //Create the label
     return new Promise(function (resolve, reject) {
-      this.options.github.issues.createLabel({
+      this.github.issues.createLabel({
         user: repo.split('/')[0],
         repo: repo.split('/')[1],
         name: name,

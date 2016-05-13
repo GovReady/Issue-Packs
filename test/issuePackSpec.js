@@ -49,10 +49,7 @@ describe("IssuePack", function () {
 
     repo = 'user/repo';
 
-    issuePack = new IssuePack({
-      github: github,
-      creds: creds
-    }, logger);
+    issuePack = new IssuePack({}, logger, github);
 
     pack = {
         'milestone': 'Milestone 1',
