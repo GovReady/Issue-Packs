@@ -7,12 +7,12 @@ import Github from 'github';
 export default class {
   //Set initial options and logger
   constructor (options, logger = console, github) {
-    if(github === undefined) {
+    this.github = github;
+
+    if(this.github === undefined) {
       this.github = new Github({
         version: "3.0.0"
       });
-    } else {
-      this.github = github;
     }
 
     this.options = options;
