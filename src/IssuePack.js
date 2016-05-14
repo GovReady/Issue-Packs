@@ -127,7 +127,7 @@ class IssuePack {
       .then(function (res) {
         this.logger.log(chalk.green('Milestone created: ' + res.data.html_url));
         cb(res.data.number);
-      })
+      }.bind(this))
       .catch(function (res) {
         var message = res.data;
 
