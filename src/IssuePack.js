@@ -4,7 +4,6 @@ import axios from 'axios';
 import chalk from 'chalk';
 import randomstring from 'randomstring';
 import {Base64} from 'js-base64';
-import Github from 'github-api';
 
 class IssuePack {
   //Set initial options and logger
@@ -12,8 +11,6 @@ class IssuePack {
     if(!options.auth) {
       throw new Error('Incorrect authorization options');
     }
-
-    this.__github = {};
 
     this.__auth = {
       token: options.auth.token,
@@ -47,16 +44,8 @@ class IssuePack {
     if(this.__auth.token) {
       axios.defaults.headers.common['Authorization'] = 'token ' + this.__auth.token;
 
-      this.__github = new Github({
-        token: this.__auth.token
-      });
     } else if ( this.__auth.username && this.__auth.password ) {
       axios.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(this.__auth.username + ':' + this.__auth.password);
-
-      this.__github = new Github({
-        username: this.__auth.username,
-        password: this.__auth.password
-      });
     }
   }
 
