@@ -15,23 +15,12 @@ Run `npm install -g issue-pack` to install globally
 
 ## Usage
 
-**The pack arguments can either be a series of files or a directory**
-
-`issue-pack -u username -p password -r repo (pack1.yml ...) [pack2.yml] [pack3.yml] ...`
+`issue-pack`
 
   * _username_: Github Username
   * _password_: Github Password
   * _repo_: Repos take the form `user/repo` (_eg. GovReady/Issue-Packs_)
-  * _inputs_: this can be a series of issue pack YAML files or a directory containing issue pack YAML files
-
-## Examples
-
-Example issue packs can be found in the `examples/` directory.
-
-* `issue-pack -u your-user -p your-github-password -r GovReady/Issue-Packs examples`
-  * If running from the root of this repo, this will run all of the issue packs in the `examples` directory against this repo
-* `issue-pack -u your-user -p your-github-password -r GovReady/Issue-Packs examples/example-pack.yml`
-  * If running from the root of this repo, this will run just the `example-pack.yml` issue pack against this repo
+  * _path_: this can be a single issue pack YAML file or a directory containing issue pack YAML files
 
 ### Issue Pack Format ( YAML )
 
