@@ -89,12 +89,7 @@ describe("IssuePack", function () {
 
   describe('#load', function () {
 
-    it('should log milestone name to the console', function () {
-      issuePack.load(pack);
-
-      expect(logger.log).to.have.been.calledOnce;
-      expect(logger.log.calledWith(chalk.yellow('Unpacking milestone: Milestone 1'))).to.be.true;
-    });
+    it('should log milestone name to the console');
 
     it('should contain the correct milestone title and issue count', function () {
       issuePack.load(pack);
@@ -115,6 +110,8 @@ describe("IssuePack", function () {
 
       expect(issuePack._createMilestone.callCount).to.equal(1);
     });
+
+    it('should return a Promise');
   });
 
   describe('#_createIssues', function () {
