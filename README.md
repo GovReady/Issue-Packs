@@ -26,7 +26,7 @@ Run `npm install -g issue-pack` to install globally
 
 ```
 
-milestone: <milestone name> # Required
+name: <pack name> # Required
 issues: # Required
   -
     title: <issue title> # Required
