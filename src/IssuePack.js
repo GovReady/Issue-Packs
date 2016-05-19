@@ -34,7 +34,7 @@ class IssuePack {
    *  @param { Object } pack - Object representation of an issue pack
    */
   load(pack) {
-    logger.log(chalk.yellow('Unpacking milestone: ' + pack.milestone));
+    logger.log(chalk.yellow('Unpacking pack: ' + pack.name));
     logger.log(chalk.green(' - ' + pack.issues.length + ' issues unpacked.'));
     this.pack = pack;
   }
@@ -55,14 +55,14 @@ class IssuePack {
    *  Push issue pack to Github
    */
   push(repo) {
-    logger.log(chalk.yellow('Pushing milestone to Github'));
+    logger.log(chalk.yellow('Pushing pack to Github'));
 
     if(!this.pack) {
       throw new Error('Cannot push to Github.  Pack contents not loaded.');
     }
 
     var pushPromise =  new Promise(function (resolve, reject) {
-      this._createMilestone(this.pack.milestone, repo, (milestone) => {
+      this._createMilestone(this.pack.name, repo, (milestone) => {
         var issuesPromise = this._createIssues(this.pack.issues, repo, milestone.number);
         issuesPromise.then(function () {
           resolve(milestone);
