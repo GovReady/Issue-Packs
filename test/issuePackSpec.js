@@ -112,6 +112,8 @@ describe("IssuePack", function () {
     });
 
     it('should return a Promise');
+
+    it('should accept an existing milestone number to push to');
   });
 
   describe('#_createIssues', function () {

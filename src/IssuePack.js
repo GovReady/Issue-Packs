@@ -54,7 +54,7 @@ class IssuePack {
   /**
    *  Push issue pack to Github
    */
-  push(repo) {
+  push(repo, milestoneNumber = undefined) {
     logger.log(chalk.yellow('Pushing pack to Github'));
 
     if(!this.pack) {
@@ -62,12 +62,20 @@ class IssuePack {
     }
 
     var pushPromise =  new Promise(function (resolve, reject) {
-      this._createMilestone(this.pack.name, repo, (milestone) => {
-        var issuesPromise = this._createIssues(this.pack.issues, repo, milestone.number);
-        issuesPromise.then(function () {
-          resolve(milestone);
+      if(milestoneNumber === undefined) {
+        this._createMilestone(this.pack.name, repo, (milestone) => {
+          var issuesPromise = this._createIssues(this.pack.issues, repo, milestone.number);
+          issuesPromise.then(function () {
+            resolve(milestone);
+          });
         });
-      });
+      } else {
+        var issuesPromise = this._createIssues(this.pack.issues, repo, milestoneNumber);
+        issuesPromise.then(function () {
+          resolve(milestoneNumber);
+        });
+      }
+
     }.bind(this));
 
     return pushPromise.then(function (milestone) {
