@@ -1,0 +1,30 @@
+name: Organizing policies
+issues:
+  -
+    title: Create repository for you policies
+    body: Create a repository to store the YAML versions of your policies
+    labels:
+      - Deputy CISO
+  -
+    title: Create a stub file for each policy
+    body: >
+      Create a file for each policy, each file labeled as follows:
+	    * [ ] AC-Policy
+	    * [ ] AU-Policy
+	    * [ ] CP-Policy
+	    * [ ] CA-Policy
+	    * [ ] PL-Policy
+	    * [ ] PS-Policy
+	    * [ ] RA-Policy
+	    * [ ] SA-Policy
+	    * [ ] SC-Policy
+	    * [ ] SI-Policy
+	    * [ ] CM-Policy
+	    * [ ] IA-Policy
+	    * [ ] AT-Policy
+	    * [ ] IR-Policy
+    labels:
+      - Deputy CISO
+  -
+    title: Issue 3
+    body: This is the third issue
