@@ -1,0 +1,15 @@
+name: Organizing policies
+issues:
+  -
+    title: Create repository for you policies
+    body: Create a repository to store the YAML versions of your policies
+    labels:
+      - Deputy CISO
+  -
+    title: Create a stub file for each policy
+    body: Create a file for each policy
+    labels:
+      - Deputy CISO
+  -
+    title: Issue 3
+    body: This is the third issue
