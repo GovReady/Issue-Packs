@@ -50,6 +50,8 @@ _If you would like to contribute, you will need to be able to compile and run th
 
 The contribution guidelines are included below, but [this blog post](http://javascriptplayground.com/blog/2015/03/node-command-line-tool/) is a good starter on the subject.
 
+Please refer to the contribution guidelines below for development build and testing processes.
+
 **Contribution Guidelines**
 
 The contribution guidelines for this repository can be found [in CONTRIBUTING.md](https://github.com/GovReady/Issue-Packs/blob/master/CONTRIBUTING.md).
