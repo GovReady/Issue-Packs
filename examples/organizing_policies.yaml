@@ -1,7 +1,7 @@
 name: Organizing policies
 issues:
   -
-  title: Identify existing Policies documents
+    title: Identify existing Policies documents
     body: "Organize any existing organization policy and procedure documents. The essence of these documents need to be converted to YAML."
     labels:
       - Deputy CISO
