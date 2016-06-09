@@ -1,15 +1,23 @@
 name: Organizing policies
 issues:
   -
-    title: Create repository for you policies
-    body: Create a repository to store the YAML versions of your policies
+  title: Identify existing Policies documents
+    body: "Organize any existing organization policy and procedure documents. The essence of these documents need to be converted to YAML."
     labels:
       - Deputy CISO
   -
-    title: Create a stub file for each policy
-    body: Create a file for each policy
+    title: "Create private repository for organization policies"
+    body: "Create a private repository to store the YAML versions of policies and procedures. One way to do this is to fork 18F's repository: https://github.com/18F/compliance-docs"
+    labels:
+      - Developer
+  -
+    title: Create YAML versions of policies
+    body: Convert each policy from its Word version to a YAML version. The YAML version will be easier to track modifications.
     labels:
       - Deputy CISO
+      - Developer
   -
-    title: Issue 3
-    body: This is the third issue
+    title: Automate generation of HTML, PDF and/or Word versions of policy documents
+    body: Creat an automated method for publishing (e.g., generating and sharing) PDF/HTML/Word versions of the polices as per your organization choice.
+    labels:
+      - Developer
