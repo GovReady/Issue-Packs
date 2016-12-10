@@ -7,9 +7,9 @@ import {Base64} from 'js-base64';
 
 var logger = console;
 
-class IssuePack {
+class IssuePackForGithub {
   //Set initial options and logger
-  constructor (options, logger = console, github) {
+  constructor (options, logger = console) { //}, github) {
     if(!options.auth) {
       throw new Error('Incorrect authorization options');
     }
@@ -210,4 +210,4 @@ class IssuePack {
   }
 }
 
-module.exports = IssuePack;
+module.exports = IssuePackForGithub;
