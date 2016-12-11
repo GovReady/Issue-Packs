@@ -1,11 +1,11 @@
 var expect = require('chai').expect;
 var chalk = require('chalk');
 var sinon = require('sinon');
-var IssuePack = require('../lib/IssuePack');
+var IssuePack = require('../lib/IssuePackForGithub');
 
 require('mocha-sinon');
 
-describe("IssuePack", function () {
+describe("IssuePackForGithub", function () {
   var issuePack;
   var logger;
   var github;

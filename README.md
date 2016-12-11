@@ -17,10 +17,13 @@ Run `npm install -g issue-pack` to install globally
 
 `issue-pack`
 
-  * _username_: Github Username
-  * _password_: Github Password
-  * _repo_: Repos take the form `user/repo` (_eg. GovReady/Issue-Packs_)
+  * _tool_: Jira or Github (defaults to Github)
+  * _username_: Jira/Github Username
+  * _password_: Jira/Github Password
   * _path_: this can be a single issue pack YAML file or a directory containing issue pack YAML files
+  * **(Jira)** _projectKey_: Project key of Jira project to import issues to. This is the 1-4 character prefix that prefixes all issues in the project
+  * **(Jira)** _jiraBaseUri_: Base URI (_eg. https://jira.govready.com or https://govready.atlassian.net_)
+  * **(Github)** _repo_: Github Repos take the form `user/repo` (_eg. GovReady/Issue-Packs_)
 
 ### Issue Pack Format ( YAML )
 
