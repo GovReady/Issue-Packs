@@ -71,7 +71,7 @@ prompt.get(toolSchema, function (toolPromptErr, toolPromptResult) {
     prompt.get(jiraSchema, function (err, result) {
       var username = result.username;
       var password = result.password;
-      var projectKey = result.projectKey;
+      var projectKey = result.projectKey ? result.projectKey.toUpperCase() : result.projectKey;
       var jiraBaseUri = result.jiraBaseUri;
       var path = result.path;
 
