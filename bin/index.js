@@ -28,11 +28,12 @@ var jiraSchema = {
       required: true
     },
     projectKey: {
-      required: true
-    },
-    jiraUri: {
       required: true,
-      description: "JIRA URI (e.g. https://jira.govready.com)"
+      description: "Jira Project Key (prefixes all issues in project)"
+    },
+    jiraBaseUri: {
+      required: true,
+      description: "Jira Base URI (e.g. https://jira.govready.com)"
     },
     path: {
       required: true
@@ -71,7 +72,7 @@ prompt.get(toolSchema, function (toolPromptErr, toolPromptResult) {
       var username = result.username;
       var password = result.password;
       var projectKey = result.projectKey;
-      var jiraUri = result.jiraUri;
+      var jiraBaseUri = result.jiraBaseUri;
       var path = result.path;
 
       var creds = {
@@ -87,7 +88,7 @@ prompt.get(toolSchema, function (toolPromptErr, toolPromptResult) {
         var issuePack = new IssuePackForJira({
           auth: creds,
           projectKey: projectKey,
-          jiraUri: jiraUri
+          jiraBaseUri: jiraBaseUri
         });
 
         var contents = YAML.load(file);
@@ -127,4 +128,3 @@ prompt.get(toolSchema, function (toolPromptErr, toolPromptResult) {
     });
   }
 });
-

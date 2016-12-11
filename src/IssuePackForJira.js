@@ -19,16 +19,11 @@ class IssuePackForJira {
       password: options.auth.password
     };
 
-    this.__apiBase = options.jiraUri;
+    this.__apiBase = options.jiraBaseUri;
     this.__projectKey = options.projectKey;
     this.__http = axios.create();
 
     logger = logger;
-
-    /*
-    if (!logger.log) {
-      logger.log = function () {}
-    }*/
   }
 
   /**
@@ -55,16 +50,13 @@ class IssuePackForJira {
       var issuesPromise = this._createIssues(this.pack.issues);
     }.bind(this));
 
-    return pushPromise.then(function (milestone) {
-      logger.log(chalk.green('Milestone pushed successfully.'));
-      return milestone;
-    });
+    return pushPromise;
   }
 
   /**
    *  Iterate through issues and create each
    */
-  _createIssues(issues) { //}, repo, milestone) {
+  _createIssues(issues) {
     var issuePromises = [];
 
     issues.forEach((issue) => {
@@ -74,15 +66,26 @@ class IssuePackForJira {
 
     return Promise.all(issuePromises)
       .then(function (issues) {
-        logger.log(chalk.green('Issues created successfully'));
-        return issues;
+        var success = true;
+        issues.forEach(function (issue) {
+          if (!issue) {
+            success = false;
+            return false;
+          }
+        });
+
+        if (success) {
+          logger.log(chalk.green('Issues created successfully'));
+        } else {
+          logger.log(chalk.red('Error occurred during issues creation'));
+        }
       });
   }
 
   /**
    * Create each issue on Jira
    */
-  _createIssue(issue) { //}, repo, milestone) {
+  _createIssue(issue) {
 
     var normalizedLabels = [];
 
@@ -108,16 +111,14 @@ class IssuePackForJira {
       }
     };
 
-    console.log(issue.labels);
-
     return this.__http.post(this.__apiBase + "/rest/api/2/issue/", newIssue, { auth: this.__auth })
       .then(function (res) {
         var data = res.data;
-        logger.log(chalk.green('Issue created: ' + data.html_url));
+        logger.log(chalk.green('Issue created: ' + data.self));
         return data;
       })
       .catch(function (err) {
-        logger.log(chalk.red('Error: ' + err));
+        logger.log(chalk.red('Error occurred during issue creation: ' + err));
       });
   }
 
@@ -130,7 +131,6 @@ class IssuePackForJira {
   _normalizeLabel(label) {
     var normalizedLabel = null;
     if (label) {
-      //normalizedLabel = label.replaceAll(" ", "_");
       normalizedLabel = label.split(" ").join("_");
     }
     return normalizedLabel;
