@@ -47,6 +47,12 @@ issues: # Required
 
 ```
 
+### Jira Integration Information
+
+Currently, Issue Pack defaults all issues to issue type "Task" to support all three software development project types: Basic, Kanban, and Scrum.
+
+For this first iteration, basic authentication is used and is recommended to only connect to secure Jira instances.
+
 ## Development
 
 _If you would like to contribute, you will need to be able to compile and run the issue-pack npm module locally_
