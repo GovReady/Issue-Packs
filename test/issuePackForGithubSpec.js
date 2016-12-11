@@ -5,7 +5,7 @@ var IssuePack = require('../lib/IssuePackForGithub');
 
 require('mocha-sinon');
 
-describe("IssuePack", function () {
+describe("IssuePackForGithub", function () {
   var issuePack;
   var logger;
   var github;

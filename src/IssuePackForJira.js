@@ -39,7 +39,7 @@ class IssuePackForJira {
   /**
    *  Push issue pack to Jira
    */
-  push(milestoneNumber = undefined) {
+  push() {
     logger.log(chalk.yellow('Pushing pack to Jira'));
 
     if(!this.pack) {
