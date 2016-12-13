@@ -13,6 +13,8 @@ Requirements:
 
 Run `npm install -g issue-pack` to install globally
 
+Alternatively, run `npm run setup`.
+
 ## Usage
 
 `issue-pack`
@@ -24,6 +26,28 @@ Run `npm install -g issue-pack` to install globally
   * **(Jira)** _projectKey_: Project key of Jira project to import issues to. This is the 1-4 character prefix that prefixes all issues in the project
   * **(Jira)** _jiraBaseUri_: Base URI (_eg. https://jira.govready.com or https://govready.atlassian.net_)
   * **(Github)** _repo_: Github Repos take the form `user/repo` (_eg. GovReady/Issue-Packs_)
+
+Example:
+```
+$ issue-pack
+tool:  jira
+username:  suzyq
+password:  
+Jira Project Key (prefixes all issues in project):  kan
+Jira Base URI (e.g. https://jira.govready.com):  https://myjira.atlassian.net
+path:  examples/au_80053_audit_set1.yaml
+Unpacking pack: undefined
+ - 5 issues unpacked.
+Pushing pack to Jira
+Issue created: https://myjira.atlassian.net/rest/api/2/issue/10160
+Issue created: https://myjira.atlassian.net/rest/api/2/issue/10164
+Issue created: https://myjira.atlassian.net/rest/api/2/issue/10161
+Issue created: https://myjira.atlassian.net/rest/api/2/issue/10162
+Issue created: https://myjira.atlassian.net/rest/api/2/issue/10163
+Issues created successfully
+
+```
+
 
 ### Issue Pack Format ( YAML )
 
