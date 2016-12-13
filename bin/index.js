@@ -36,7 +36,8 @@ var jiraSchema = {
       description: "Jira Base URI (e.g. https://jira.govready.com)"
     },
     path: {
-      required: true
+      required: true,
+      description: "path to issuepack file(s) (e.g. examples/example-pack.yml)"
     }
   }
 };
