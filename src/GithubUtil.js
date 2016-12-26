@@ -21,11 +21,11 @@ export default class GithubUtil {
           pattern: /^[a-zA-Z\-]+\/[a-zA-Z\-]+$/,
           message: 'Repo must be in the form of `user/repo`',
           required: true,
-          description: "repo (username/repo)"
+          description: "Github Repo (username/repo)"
         },
         path: {
           required: true,
-          description: "YAML File Path (white-space separated)"
+          description: "Path to Issue-Pack File(s) (e.g. examples/example-pack.yml)"
         }
       }
     };

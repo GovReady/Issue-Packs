@@ -27,7 +27,7 @@ export default class JiraUtil {
         },
         path: {
           required: true,
-          description: "YAML File Path (white-space separated)"
+          description: "Path to Issue-Pack File(s) (e.g. examples/example-pack.yml)"
         }
       }
     };
