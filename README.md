@@ -15,16 +15,39 @@ Run `npm install -g issue-pack` to install globally
 
 ## Usage
 
+Issue Pack can be used with command prompts
+
 `issue-pack`
 
   * _tool_: Jira or Github (defaults to Github)
   * _username_: Jira/Github Username
   * _password_: Jira/Github Password
-  * _path_: this can be a single issue pack YAML file or a directory containing issue pack YAML files
+  * _path_: this can be a single issue pack YAML file, a directory containing issue pack YAML files, or multiple issue pack YAML files separated with white-spaces
   * **(Jira)** _projectKey_: Project key of Jira project to import issues to. This is the 1-4 character prefix that prefixes all issues in the project
   * **(Jira)** _jiraBaseUri_: Base URI (_eg. https://jira.govready.com or https://govready.atlassian.net_)
   * **(Github)** _repo_: Github Repos take the form `user/repo` (_eg. GovReady/Issue-Packs_)
 
+Issue Pack can be used with command line arguments
+
+**Jira Example**
+`issue-pack -t=jira -u=test -p=test -k=TEST -b=https://jira.govready.com examples/example-pack2.yml examples/example-pack.yml`
+
+  * _tool_: -t=jira
+  * _username_: -u=username
+  * _password_: -p=username
+  * _path_: examples/example-pack2.yml examples/example-pack.yml
+  * _projectKey_: -k=TEST
+  * _jiraBaseUri_: -b=https://jira.govready.com
+
+**Github Example**
+`issue-pack -t=github -u=test -p=test -r=repo/repo examples/example-pack2.yml examples/example-pack.yml`
+
+  * _tool_: -t=jira
+  * _username_: -u=username
+  * _password_: -p=username
+  * _path_: examples/example-pack2.yml examples/example-pack.yml
+  * _repo_: -r=repo/repo
+  
 ### Issue Pack Format ( YAML )
 
 ```
