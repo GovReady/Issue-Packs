@@ -9,7 +9,25 @@ export default class Util {
     this.logger = logger;
   }
 
-  parseFiles(files) {
+  promptSchema() {
+    return {
+      properties: {
+        tool: {
+          required: true
+        }
+      }
+    };
+  }
+
+  // List of files separated by white space
+  parseFiles(stringListOfFiles) {
+
+    if (!stringListOfFiles) {
+      stringListOfFiles = '';
+    }
+
+    var files = stringListOfFiles.split(' ');
+
     //Ensure that the input files or directory exist
     this._checkExist(files);
 
@@ -19,8 +37,6 @@ export default class Util {
         //Otherwise just return the files array
       if(fs.lstatSync(files[0]).isDirectory()) {
         var dir = files[0];
-
-
 
         var dirFiles = fs.readdirSync(dir);
 
@@ -43,27 +59,28 @@ export default class Util {
     return files;
   }
 
+  parse(args) {
+    var options = {};
+    var util = this;
+    args.forEach(function (arg) {
+      if (util.startsWith(arg, "-t=")) {
+        options.tool = arg.split('=', 2)[1];
+      }
+    });
+    return options;
+  }
+
+  startsWith(str, prefix) {
+    return str.substr(0, prefix.length) == prefix;
+  }
+
   //Validate input arguments
   validate(args) {
-    var username = args.u;
-    var password = args.p;
-    var repo = args.r;
-    var packs = args._;
     var error = false;
 
-    if (username === undefined || username === true) {
-      error = true;
-    }
+    var tool = args.tool;
 
-    if (password === undefined || password === true) {
-      error = true;
-    }
-
-    if (repo === undefined || repo === true) {
-      error = true;
-    }
-
-    if (packs.length === 0) {
+    if (tool === undefined || tool === true) {
       error = true;
     }
 
@@ -72,7 +89,7 @@ export default class Util {
 
   //Print script usage
   usage() {
-    var message = "usage: issue-pack -u username -p password -r repo pack1.yml [pack2.yml] [pack3.yml] ...";
+    var message = "usage: issue-pack -t=[toolName]";
 
     return message;
   }

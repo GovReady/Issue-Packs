@@ -5,127 +5,125 @@ var YAML = require('yamljs');
 var IssuePackForGithub = require('../lib/IssuePackForGithub');
 var IssuePackForJira = require('../lib/IssuePackForJira');
 var Util = require('../lib/Util').default;
+var JiraUtil = require('../lib/JiraUtil').default;
+var GithubUtil = require('../lib/GithubUtil').default;
 var prompt = require('prompt');
 
 //Create new Util class
 var util = new Util();
+var jiraUtil = new JiraUtil(util);
+var githubUtil = new GithubUtil(util);
 
-var toolSchema = {
-  properties: {
-    tool: {
-      required: true
-    }
-  }
-};
+var toolSchema = util.promptSchema();
+var jiraSchema = jiraUtil.promptSchema();
+var githubSchema = githubUtil.promptSchema();
 
-var jiraSchema = {
-  properties: {
-    username: {
-      required: true
-    },
-    password: {
-      hidden: true,
-      required: true
-    },
-    projectKey: {
-      required: true,
-      description: "Jira Project Key (prefixes all issues in project)"
-    },
-    jiraBaseUri: {
-      required: true,
-      description: "Jira Base URI (e.g. https://jira.govready.com)"
-    },
-    path: {
-      required: true,
-      description: "path to issuepack file(s) (e.g. examples/example-pack.yml)"
-    }
-  }
-};
+var callIssuePacksForGithub = function(options) {
+  prompt.get(githubSchema, function (err, result) {
+    var username = options.username;
+    var password = options.password;
+    var repo = options.repo;
+    var path = options.path;
 
-var githubSchema = {
-  properties: {
-    username: {
-      required: true
-    },
-    password: {
-      hidden: true,
-      required: true
-    },
-    repo: {
-      pattern: /^[a-zA-Z\-]+\/[a-zA-Z\-]+$/,
-      message: 'Repo must be in the form of `user/repo`',
-      required: true,
-      description: "repo (username/repo)"
-    },
-    path: {
-      required: true
-    }
-  }
-};
+    var creds = {
+      username: username,
+      password: password
+    };
 
-prompt.message = "";
+    //Retrieve pack files
+    var packFiles = util.parseFiles(path);
 
-prompt.start();
-
-prompt.get(toolSchema, function (toolPromptErr, toolPromptResult) {
-  if (toolPromptResult.tool &&  toolPromptResult.tool.toUpperCase() === 'JIRA') {
-    prompt.get(jiraSchema, function (err, result) {
-      var username = result.username;
-      var password = result.password;
-      var projectKey = result.projectKey ? result.projectKey.toUpperCase() : result.projectKey;
-      var jiraBaseUri = result.jiraBaseUri;
-      var path = result.path;
-
-      var creds = {
-        username: username,
-        password: password
-      };
-
-      //Retrieve pack files
-      var packFiles = util.parseFiles([path]);
-
-      //Iterate through the pack files
-      packFiles.forEach(function (file) {
-        var issuePack = new IssuePackForJira({
-          auth: creds,
-          projectKey: projectKey,
-          jiraBaseUri: jiraBaseUri
-        });
-
-        var contents = YAML.load(file);
-
-        issuePack.load(contents);
-
-        issuePack.push();
+    //Iterate through the pack files
+    packFiles.forEach(function (file) {
+      var issuePack = new IssuePackForGithub({
+        auth: creds
       });
+
+      var contents = YAML.load(file);
+
+      issuePack.load(contents);
+
+      issuePack.push(repo);
     });
+  });
+};
+
+var callIssuePacksForJira = function(options) {
+  var username = options.username;
+  var password = options.password;
+  var projectKey = options.projectKey ? options.projectKey.toUpperCase() : options.projectKey;
+  var jiraBaseUri = options.jiraBaseUri;
+  var path = options.path;
+
+  var creds = {
+    username: username,
+    password: password
+  };
+
+  //Retrieve pack files
+  var packFiles = util.parseFiles(path);
+
+  //Iterate through the pack files
+  packFiles.forEach(function (file) {
+    var issuePack = new IssuePackForJira({
+      auth: creds,
+      projectKey: projectKey,
+      jiraBaseUri: jiraBaseUri
+    });
+
+    var contents = YAML.load(file);
+
+    issuePack.load(contents);
+
+    issuePack.push();
+  });
+};
+
+
+var commandLineArguments = process.argv.slice(2);
+
+if (commandLineArguments.length > 0) {
+  var parsedCommandLineArguments = util.parse(commandLineArguments);
+  var valid = util.validate(parsedCommandLineArguments);
+
+  if (valid) {
+    if (parsedCommandLineArguments.tool.toUpperCase() === 'JIRA') {
+      parsedCommandLineArguments = jiraUtil.parse(commandLineArguments);
+      var jiraValid = jiraUtil.validate(parsedCommandLineArguments);
+
+      if (jiraValid) {
+        callIssuePacksForJira(parsedCommandLineArguments);
+      } else {
+        console.error(jiraUtil.usage());
+      }
+    } else {
+      parsedCommandLineArguments = githubUtil.parse(commandLineArguments);
+      var githubValid = githubUtil.validate(parsedCommandLineArguments);
+
+      if (githubValid) {
+        callIssuePacksForGithub(parsedCommandLineArguments);
+      } else {
+        console.error(githubUtil.usage());
+      }
+    }
   } else {
-    prompt.get(githubSchema, function (err, result) {
-      var username = result.username;
-      var password = result.password;
-      var repo = result.repo;
-      var path = result.path;
-
-      var creds = {
-        username: username,
-        password: password
-      };
-
-      //Retrieve pack files
-      var packFiles = util.parseFiles([path]);
-
-      //Iterate through the pack files
-      packFiles.forEach(function (file) {
-        var issuePack = new IssuePackForGithub({
-          auth: creds
-        });
-
-        var contents = YAML.load(file);
-
-        issuePack.load(contents);
-
-        issuePack.push(repo);
-      });
-    });
+    console.error(util.usage());
+    console.error('When using command line arguments, the tool parameter (-t) is required. Where [toolName] is jira or github');
   }
-});
+
+} else {
+  prompt.message = "";
+  prompt.start();
+
+  prompt.get(toolSchema, function (toolPromptErr, toolPromptResult) {
+    if (toolPromptResult.tool &&  toolPromptResult.tool.toUpperCase() === 'JIRA') {
+      prompt.get(jiraSchema, function (err, result) {
+        callIssuePacksForJira(result);
+      });
+    } else {
+      prompt.get(githubSchema, function (err, result) {
+        callIssuePacksForGithub(result);
+      });
+    }
+  });
+}
