@@ -34,7 +34,7 @@ describe('Util', function () {
     });
 
     it('should throw an error if a single input file does not exist', function () {
-      var files = ['missing.yml'];
+      var files = 'missing.yml';
 
       expect(function () {
         util.parseFiles(files);
@@ -42,7 +42,7 @@ describe('Util', function () {
     });
 
     it('should throw an error if any file does not exist', function () {
-      var files = ['pack1.yml', 'missing.yml'];
+      var files = 'pack1.yml missing.yml';
 
       expect(function () {
         util.parseFiles(files);
@@ -50,22 +50,26 @@ describe('Util', function () {
     });
 
     it('should correctly parse a single file', function () {
-      var files = ['pack1.yml'];
+      var files = 'pack1.yml';
       var result = util.parseFiles(files);
 
-      expect(result).to.equal(files);
+      expect(result.length === 1).to.be.true;
+      expect(result[0] === files).to.be.true;
     });
 
     it('should correctly parse an array of files', function () {
-      var files = ['pack1.yml', 'pack2.yml', 'pack3.yml'];
+      var files = 'pack1.yml pack2.yml pack3.yml';
       var result = util.parseFiles(files);
 
-      expect(result).to.equal(files);
+      expect(result.length === 3).to.be.true;
+      expect(result[0] === 'pack1.yml').to.be.true;
+      expect(result[1] === 'pack2.yml').to.be.true;
+      expect(result[2] === 'pack3.yml').to.be.true;
     });
 
     it('should correctly parse a directory', function () {
-      var files = ['examples'];
-      var expected = ['examples/pack4.yml', 'examples/pack5.yml', 'examples/pack6.yml']
+      var files = 'examples';
+      var expected = ['examples/pack4.yml', 'examples/pack5.yml', 'examples/pack6.yml'];
       var result = util.parseFiles(files);
 
       expect(result).to.eql(expected);
@@ -75,10 +79,8 @@ describe('Util', function () {
   describe('#validate()', function () {
     it('should accept correctly submitted args with one pack', function () {
       var args = {
-        u: 'username',
-        p: 'password',
-        r: 'repo',
-        _: 'pack1.yml'
+        tool: 'test',
+        path: 'pack1.yml'
       };
 
       var results = util.validate(args);
@@ -88,10 +90,8 @@ describe('Util', function () {
 
     it('should accept correctly submitted args with multiple packs', function () {
       var args = {
-        u: 'username',
-        p: 'password',
-        r: 'repo',
-        _: ['pack1.yml', 'pack2.yml']
+        tool: 'test',
+        path: 'pack1.yml pack2.yml'
       };
 
       var results = util.validate(args);
@@ -151,7 +151,7 @@ describe('Util', function () {
 
   describe('#usage', function () {
     it('should return usage message', function () {
-      var message = "usage: issue-pack -u username -p password -r repo pack1.yml [pack2.yml] [pack3.yml] ...";
+      var message = "usage: issue-pack -t=[toolName]";
 
       var results = util.usage();
       expect(results).to.equal(message);

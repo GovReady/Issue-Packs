@@ -26,7 +26,8 @@ export default class JiraUtil {
           description: "Jira Base URI (e.g. https://jira.govready.com)"
         },
         path: {
-          required: true
+          required: true,
+          description: "YAML File Path (white-space separated)"
         }
       }
     };

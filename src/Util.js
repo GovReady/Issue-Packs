@@ -22,6 +22,10 @@ export default class Util {
   // List of files separated by white space
   parseFiles(stringListOfFiles) {
 
+    if (!stringListOfFiles) {
+      stringListOfFiles = '';
+    }
+
     var files = stringListOfFiles.split(' ');
 
     //Ensure that the input files or directory exist

@@ -24,7 +24,8 @@ export default class GithubUtil {
           description: "repo (username/repo)"
         },
         path: {
-          required: true
+          required: true,
+          description: "YAML File Path (white-space separated)"
         }
       }
     };
@@ -65,7 +66,7 @@ export default class GithubUtil {
     var repo = args.repo;
     var path = args.path;
 
-    if (!tool || tool.toUpperCase() !== 'JIRA') {
+    if (!tool || tool.toUpperCase() !== 'GITHUB') {
       error = true;
     }
 
