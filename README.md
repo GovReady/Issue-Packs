@@ -15,7 +15,7 @@ Run `npm install -g issue-pack` to install globally
 
 ## Usage
 
-Issue Pack can be used with command prompts
+Issue Pack can be used with command prompts where the user enters the information via prompts.
 
 `issue-pack`
 
@@ -27,7 +27,7 @@ Issue Pack can be used with command prompts
   * **(Jira)** _jiraBaseUri_: Base URI (_eg. https://jira.govready.com or https://govready.atlassian.net_)
   * **(Github)** _repo_: Github Repos take the form `user/repo` (_eg. GovReady/Issue-Packs_)
 
-Issue Pack can be used with command line arguments
+Issue Pack can be used with command line arguments in a single command.
 
 **Jira Example**
 `issue-pack -t=jira -u=test -p=test -k=TEST -b=https://jira.govready.com examples/example-pack2.yml examples/example-pack.yml`
