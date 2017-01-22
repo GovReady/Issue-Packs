@@ -65,6 +65,7 @@ var callIssuePacksForJira = function(options) {
   var packFiles = util.parseFiles(path);
 
   //Iterate through the pack files
+  var promises = [];
   packFiles.forEach(function (file) {
     var issuePack = new IssuePackForJira({
       auth: creds,
@@ -76,8 +77,14 @@ var callIssuePacksForJira = function(options) {
 
     issuePack.load(contents);
 
-    issuePack.push();
+    promises.push(issuePack.push());
   });
+
+  Promise.all(promises)
+    .then(function(results) {
+    }).catch(function(e) {
+      console.error(e);
+    });
 };
 
 

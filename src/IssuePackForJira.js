@@ -47,7 +47,9 @@ class IssuePackForJira {
     }
 
     var pushPromise =  new Promise(function (resolve, reject) {
-      var issuesPromise = this._createIssues(this.pack.issues);
+      this._createIssues(this.pack.issues)
+        .then(resolve)
+        .catch(reject);
     }.bind(this));
 
     return pushPromise;
