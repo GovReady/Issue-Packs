@@ -25,7 +25,7 @@
     "minimist": "^1.2.0",
     "prompt": "1.0.0",
     "randomstring": "^1.1.4",
-    "yamljs": "^0.2.7"
+    "js-yaml": "3.7.0"
   },
   "bin": {
     "issue-pack": "./bin/index.js"

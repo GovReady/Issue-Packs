@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
+var fs = require('fs');
 var chalk = require('chalk');
-var YAML = require('yamljs');
+var YAML = require('js-yaml');
 var IssuePackForGithub = require('../lib/IssuePackForGithub');
 var IssuePackForJira = require('../lib/IssuePackForJira');
 var Util = require('../lib/Util').default;
@@ -39,7 +40,7 @@ var callIssuePacksForGithub = function(options) {
         auth: creds
       });
 
-      var contents = YAML.load(file);
+      var contents = YAML.safeLoad(fs.readFileSync(file, 'utf8'));
 
       issuePack.load(contents);
 
@@ -71,7 +72,7 @@ var callIssuePacksForJira = function(options) {
       jiraBaseUri: jiraBaseUri
     });
 
-    var contents = YAML.load(file);
+    var contents = YAML.safeLoad(fs.readFileSync(file, 'utf8'));
 
     issuePack.load(contents);
 
