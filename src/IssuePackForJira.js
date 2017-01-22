@@ -5,11 +5,9 @@ import chalk from 'chalk';
 import randomstring from 'randomstring';
 import {Base64} from 'js-base64';
 
-var logger = console;
-
 class IssuePackForJira {
   //Set initial options and logger
-  constructor (options, logger = console) {
+  constructor (options, logger=console) {
     if(!options.auth) {
       throw new Error('Incorrect authorization options');
     }
@@ -23,7 +21,7 @@ class IssuePackForJira {
     this.__projectKey = options.projectKey;
     this.__http = axios.create();
 
-    logger = logger;
+    this.logger = logger;
   }
 
   /**
@@ -31,8 +29,8 @@ class IssuePackForJira {
    *  @param { Object } pack - Object representation of an issue pack
    */
   load(pack) {
-    logger.log(chalk.yellow('Unpacking pack: ' + pack.name));
-    logger.log(chalk.green(' - ' + pack.issues.length + ' issues unpacked.'));
+    this.logger.log(chalk.yellow('Unpacking pack: ' + pack.name));
+    this.logger.log(chalk.green(' - ' + pack.issues.length + ' issues unpacked.'));
     this.pack = pack;
   }
 
@@ -40,7 +38,7 @@ class IssuePackForJira {
    *  Push issue pack to Jira
    */
   push() {
-    logger.log(chalk.yellow('Pushing pack to Jira'));
+    this.logger.log(chalk.yellow('Pushing pack to Jira'));
 
     if(!this.pack) {
       throw new Error('Cannot push to Jira.  Pack contents not loaded.');
@@ -60,6 +58,7 @@ class IssuePackForJira {
    */
   _createIssues(issues) {
     var issuePromises = [];
+    var logger = this.logger;
 
     issues.forEach((issue) => {
       var promise = this._createIssue(issue);
@@ -81,6 +80,10 @@ class IssuePackForJira {
         } else {
           logger.log(chalk.red('Error occurred during issues creation'));
         }
+
+        return {
+          issues: issues
+        }
       });
   }
 
@@ -88,7 +91,7 @@ class IssuePackForJira {
    * Create each issue on Jira
    */
   _createIssue(issue) {
-
+    var logger = this.logger;
     var normalizedLabels = [];
 
     for ( var i in issue.labels ) {
@@ -117,10 +120,14 @@ class IssuePackForJira {
       .then(function (res) {
         var data = res.data;
         logger.log(chalk.green('Issue created: ' + data.self));
+        data.title = newIssue.fields.summary; // so that we can tell what this was for
         return data;
       })
       .catch(function (err) {
         logger.log(chalk.red('Error occurred during issue creation: ' + err));
+        return {
+          "error": ""+err,
+        };
       });
   }
 

@@ -71,7 +71,7 @@ var callIssuePacksForJira = function(options) {
       auth: creds,
       projectKey: projectKey,
       jiraBaseUri: jiraBaseUri
-    });
+    }, options.logger);
 
     var contents = YAML.safeLoad(fs.readFileSync(file, 'utf8'));
 
@@ -82,6 +82,10 @@ var callIssuePacksForJira = function(options) {
 
   Promise.all(promises)
     .then(function(results) {
+      if (options.json_response != "") {
+        options.json_response["issues"] = results;
+        console.log(JSON.stringify(options.json_response));
+      }
     }).catch(function(e) {
       console.error(e);
     });

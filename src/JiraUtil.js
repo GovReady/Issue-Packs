@@ -1,9 +1,10 @@
 "use strict";
 
+import chalk from 'chalk';
+
 export default class JiraUtil {
   //Set util options
-  constructor (util = null, logger = console) {
-    this.logger = logger;
+  constructor (util = null) {
     this.util = util;
   }
 
@@ -36,9 +37,10 @@ export default class JiraUtil {
   parse(args) {
     var util = this.util;
     var options = {
-      path: []
+      path: [],
+      logger: console,
+      json_response: ""
     };
-
     args.forEach(function (arg) {
       if (util.startsWith(arg, "-t=")) {
         options.tool = arg.split('=', 2)[1];
@@ -50,6 +52,11 @@ export default class JiraUtil {
         options.projectKey = arg.split('=', 2)[1];
       } else if (util.startsWith(arg, "-b=")) {
         options.jiraBaseUri= arg.split('=', 2)[1];
+      } else if (arg == "--json") {
+        options.json_response = {
+          log: []
+        };
+        options.logger = { log: function(msg) { options.json_response.log.push(chalk.stripColor(msg)); } }
       } else {
         options.path.push(arg);
       }
@@ -100,7 +107,7 @@ export default class JiraUtil {
 
   //Print script usage
   usage() {
-    var message = "usage: issue-pack -t=jira -u=username -p=password -k=projectKey -b=baseUri pack1.yml [pack2.yml] [pack3.yml] ...";
+    var message = "usage: issue-pack -t=jira -u=username -p=password -k=projectKey -b=baseUri [--json] pack1.yml [pack2.yml] [pack3.yml] ...";
 
     return message;
   }
